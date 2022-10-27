@@ -13,7 +13,7 @@ from scipy.sparse.linalg import spsolve
 from functions import *
 
 data = np.loadtxt('./marmousi.dat')
-v1 = np.flip(data, axis = [0])
+v1 = data.copy()
 
 nz, nx = v1.shape
 
