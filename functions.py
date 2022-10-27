@@ -401,14 +401,11 @@ def plot_seismogram(seis, t, nx, n_pml, dx, z_rec, fname):
 
     vmax = np.sqrt(np.mean(seis.real**2))
 
-    fig, ax = plt.subplots(nrows = 1, ncols = 2, figsize = (12, 6))
-    fig1 = ax[0].imshow(seis.real, cmap = 'gray', aspect = 'auto', extent = [0, (nx-2*n_pml)*dx, t[-1], t[0]], vmin = -vmax, vmax = vmax)
+    fig, ax = plt.subplots(figsize = (12, 6))
+    fig1 = ax.imshow(seis.real, cmap = 'gray', aspect = 'auto', extent = [0, (nx-2*n_pml)*dx, t[-1], t[0]], vmin = -vmax, vmax = vmax)
     fig.colorbar(fig1)
     ax.set_title('seismogram recorded at: '+str(z_rec)+'m')
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Time (s)')
-
-    fig2 = ax[1].imshow(seis.real, cmap = 'seismic', aspect = 'auto', extent = [0, (nx-2*n_pml)*dx, t[-1], t[0]], vmin = -vmax, vmax = vmax)
-    fig.colorbar(fig2)
 
     plt.savefig(fname, dpi = 100)
