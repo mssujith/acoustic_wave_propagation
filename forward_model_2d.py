@@ -1,5 +1,3 @@
-#!/bin/bash
-
 import time
 
 t69 = time.time()
