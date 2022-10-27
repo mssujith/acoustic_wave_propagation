@@ -57,8 +57,8 @@ Ts, Tr = src_rec(x_src, z_src, x_rec, z_rec, dx, dz, nx, nz, n_pml)
 P13, data13 = forward_solver_13(F, v, d, src, Ts, Tr, dx, dz, n_pml)
 P5, data5 = forward_solver_5(F, v, d, src, Ts, Tr, dx, dz, n_pml)
 
-fname13 = './results/wavefields13.png'
-fname5 = './results/wavefields5.png'
+fname13 = './wavefields13.png'
+fname5 = './wavefields5.png'
 
 plot_wavefields(P13, x_src, z_src, n_pml, dx, dz, F, fname13)
 plot_wavefields(P5, x_src, z_src, n_pml, dx, dz, F, fname5)
@@ -66,8 +66,8 @@ plot_wavefields(P5, x_src, z_src, n_pml, dx, dz, F, fname5)
 t, seis13 = freq2time(data13, F)
 t, seis5 = freq2time(data5, F)
 
-fname13 = './results/seismogram13.png'
-fname5 = './results/seismogram5.png'
+fname13 = './seismogram13.png'
+fname5 = './seismogram5.png'
 
 plot_seismogram(seis13, t, nx, n_pml, dx, z_rec, fname13)
 plot_seismogram(seis5, t, nx, n_pml, dx, z_rec, fname5)
