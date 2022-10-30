@@ -37,7 +37,7 @@ def forward_solver_13(F, v, d, src, Ts, Tr, dx, dz, n_pml):
 
     nz, nx = v.shape
     
-    P = np.empty((nz, nx))
+    P = np.empty((nz-n_pml, nx-2*n_pml))
     P = np.atleast_3d(P)
 
     n_rec, temp = Tr.shape
@@ -151,7 +151,7 @@ def forward_solver_13(F, v, d, src, Ts, Tr, dx, dz, n_pml):
         data = np.append(data, data1, axis = 2)
 
         p = p1.reshape(nz, nx)
-        P = np.append(P, np.atleast_3d(p), axis = 2)
+        P = np.append(P, np.atleast_3d(p[:-n_pml, n_pml:-n_pml]), axis = 2)
 
     P = np.delete(P, 0, 2)
     data = np.delete(data, 0, 2)
@@ -190,7 +190,7 @@ def forward_solver_5(F, v, d, src, Ts, Tr, dx, dz, n_pml):
 
     nz, nx = v.shape
     
-    P = np.empty((nz, nx))
+    P = np.empty((nz-n_pml, nx-2*n_pml))
     P = np.atleast_3d(P)
     n_rec, temp = Tr.shape
 
@@ -282,7 +282,7 @@ def forward_solver_5(F, v, d, src, Ts, Tr, dx, dz, n_pml):
         data = np.append(data, data1, axis = 2)
 
         p = p1.reshape(nz, nx)
-        P = np.append(P, np.atleast_3d(p), axis = 2)
+        P = np.append(P, np.atleast_3d(p[:-n_pml, n_pml:-n_pml]), axis = 2)
 
     P = np.delete(P, 0, 2)
     data = np.delete(data, 0, 2)
@@ -464,7 +464,7 @@ def plot_wavefields(P, extent, F, fname):
     i = 0
 
     for ax in axes.flat:
-        im_data = P[:-n_pml, n_pml:-n_pml, int(num*i)].real
+        im_data = P[:, :, int(num*i)].real
         pmax = np.sqrt(np.mean(im_data**2))
         im = ax.imshow(im_data.real, cmap='seismic', vmin = -pmax, vmax = pmax, extent = extent) 
         ax.set_title(f'{F1[num*i]} Hz')
