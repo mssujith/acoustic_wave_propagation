@@ -398,18 +398,18 @@ def src_rec(x_src, z_src, x_rec, z_rec, dx, dz, nx, nz, n_pml):
 
 def freq2time(data, F):
 	
-    """
-    This function perform Fourier transform on frequency data to create seismograms in time domain.
+     """
+     This function perform Fourier transform on frequency data to create seismograms in time domain.
     
-    # INPUTS
-    P    :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
-    data :    3D array; containing pressure wavefield values at receiver locations to each frequency (axis = 2)
+     # INPUTS
+     P    :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
+     data :    3D array; containing pressure wavefield values at receiver locations to each frequency (axis = 2)
     
-    # OUTPUTS
-    t     :    1D array; containing time information corresponding to each sample in 'seis'
-    seis  :    2D array; containing the seismogram (axis=1 is receiver location, axis=0 is time)
+     # OUTPUTS
+     t     :    1D array; containing time information corresponding to each sample in 'seis'
+     seis  :    2D array; containing the seismogram (axis=1 is receiver location, axis=0 is time)
     
-    """
+     """
 
      temp1, n_rec, nf = data.shape
 
