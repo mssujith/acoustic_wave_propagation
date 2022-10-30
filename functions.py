@@ -12,6 +12,29 @@ from scipy.sparse.linalg import spsolve, eigs
 
 def forward_solver_13(F, v, d, src, Ts, Tr, dx, dz, n_pml):
     
+
+    """
+    This function solves the wave equation for each frequencies and outputs corresponding pressure wavefields and data recorded at receivers (in freqeuncy domain).
+    The acoustic wave equation is solved using the fourth-order finite difference approximation on staggered grids resulting in 13-point stencils.
+    
+    # INPUTS
+    F     :    1D array; containing discreet freqeuncies
+    v     :    2D array; containing velocity values coresponding to grid points
+    d     :    2D array; containing density values coresponding to grid points
+    src   :    1D array; containing amplitude of source wavelets corresponding to each frequency
+    Ts    :    2D array; for transforming source location to gridpoints
+    Tr    :    2D array; for transforming gridpoints to receiver locations
+    dx    :    number; discritization in x direction
+    dz    :    number; discritization in z direction
+    n_pml :    number; of PMLs at each boundary
+    
+    # OUTPUTS
+    P    :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
+    data :    3D array; containing pressure wavefield values at receiver locations to each frequency (axis = 2)
+    
+    """
+
+
     nz, nx = v.shape
     
     P = np.empty((nz, nx))
@@ -143,6 +166,28 @@ def forward_solver_13(F, v, d, src, Ts, Tr, dx, dz, n_pml):
 
 def forward_solver_5(F, v, d, src, Ts, Tr, dx, dz, n_pml):
     
+    """
+    This function solves the wave equation for each frequencies and outputs corresponding pressure wavefields and data recorded at receivers (in freqeuncy domain).
+    The acoustic wave equation is solved using the second-order finite difference approximation on staggered grids resulting in 5-point stencils.
+    
+    # INPUTS
+    F     :    1D array; containing discreet freqeuncies
+    v     :    2D array; containing velocity values coresponding to grid points
+    d     :    2D array; containing density values coresponding to grid points
+    src   :    1D array; containing amplitude of source wavelets corresponding to each frequency
+    Ts    :    2D array; for transforming source location to gridpoints
+    Tr    :    2D array; for transforming gridpoints to receiver locations
+    dx    :    number; discritization in x direction
+    dz    :    number; discritization in z direction
+    n_pml :    number; of PMLs at each boundary
+    
+    # OUTPUTS
+    P    :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
+    data :    3D array; containing pressure wavefield values at receiver locations to each frequency (axis = 2)
+    
+    """
+
+
     nz, nx = v.shape
     
     P = np.empty((nz, nx))
@@ -255,6 +300,26 @@ def forward_solver_5(F, v, d, src, Ts, Tr, dx, dz, n_pml):
 
 def src_rec(x_src, z_src, x_rec, z_rec, dx, dz, nx, nz, n_pml):
     
+    """
+    This function creates transform matrix/ operator for changing source and receiver locations in to gridpoints.
+    
+    # INPUTS
+    x_src :    1D array; containing x location of sources
+    z_src :    number; depth of sources
+    x_rec :    1D array; containing x location of receivers
+    z_rec :    number; depth of receivers
+    dx    :    number; discritization in x direction
+    dz    :    number; discritization in z direction
+    nx    :    number; of gridpoints in x direction
+    nz    :    number; of gridpoints in z direction
+    n_pml :    number; of PML layers
+    
+    # OUTPUTS
+    Ts    :    2D array; for transforming source location to gridpoints
+    Tr    :    2D array; for transforming gridpoints to receiver locations
+    
+    """
+    
     Ts = np.zeros((nz, nx))
 
     for i in range(len(x_src)):
@@ -332,6 +397,19 @@ def src_rec(x_src, z_src, x_rec, z_rec, dx, dz, nx, nz, n_pml):
 """
 
 def freq2time(data, F):
+	
+    """
+    This function perform Fourier transform on frequency data to create seismograms in time domain.
+    
+    # INPUTS
+    P    :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
+    data :    3D array; containing pressure wavefield values at receiver locations to each frequency (axis = 2)
+    
+    # OUTPUTS
+    t     :    1D array; containing time information corresponding to each sample in 'seis'
+    seis  :    2D array; containing the seismogram (axis=1 is receiver location, axis=0 is time)
+    
+    """
 
      temp1, n_rec, nf = data.shape
 
@@ -361,12 +439,24 @@ def freq2time(data, F):
   ================================================================================== PLOTTING FINITE FREQUENCY WAVEFIELDS ========================================================================================================
 """
 
-def plot_wavefields(P, x_src, z_src, n_pml, dx, dz, F, fname):
+def plot_wavefields(P, extent, F, fname):
+	
+    """
+    This function plots the pressure wavefields (in frequency domain) corresponding to certain frequencies.
+    
+    # INPUTS
+    P      :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
+    extent :    1D array containg the information about the extent of the physical domain
+    F      :    1D array; containing discreet freqeuncies
+    fname  :    string; file name for saving the plot
+    
+    
+    """
 
     nz, nx, nf = P.shape
     nrows, ncols = 4, 5
     fig, axes = plt.subplots(nrows = nrows, ncols = ncols, figsize=(20, 12))
-    plt.suptitle('Source x: '+str(x_src)+'m'+'\n Source z: '+str(z_src)+'m', fontweight="bold")
+    plt.suptitle('Pressure wavefields', fontweight="bold")
 
     num = int(nf/(nrows*ncols-1))
 
@@ -376,7 +466,7 @@ def plot_wavefields(P, x_src, z_src, n_pml, dx, dz, F, fname):
     for ax in axes.flat:
         im_data = P[:-n_pml, n_pml:-n_pml, int(num*i)].real
         pmax = np.sqrt(np.mean(im_data**2))
-        im = ax.imshow(im_data.real, cmap='seismic', vmin = -pmax, vmax = pmax, extent = [0, (nx-2*n_pml) * dx, (nz-n_pml)*dz, 0]) 
+        im = ax.imshow(im_data.real, cmap='seismic', vmin = -pmax, vmax = pmax, extent = extent) 
         ax.set_title(f'{F1[num*i]} Hz')
         if i%5 != 0:
             ax.set_yticks([])
@@ -397,14 +487,25 @@ def plot_wavefields(P, x_src, z_src, n_pml, dx, dz, F, fname):
   ================================================================================== PLOTTING SEISMOGRAM =================================================================================================
 """
 
-def plot_seismogram(seis, t, nx, n_pml, dx, z_rec, fname):
+def plot_seismogram(seis, extent, fname, cmap = 'gray'):
+	
+    """
+    This function plots the seismogram (in time domain).
+    
+    # INPUTS
+    seis   :    3D array; containing pressure wavefield value at each gridpoint corresponding to each frequency (axis = 2)
+    extent :    1D array containg the information about the extent of the physical domain in x direction and time
+    fname  :    string; file name for saving the plot
+    cmap   :    string; matplotlib colormaps. default value is 'gray'
+    
+    """
 
     vmax = np.sqrt(np.mean(seis.real**2))
 
     fig, ax = plt.subplots(figsize = (12, 6))
-    fig1 = ax.imshow(seis.real, cmap = 'gray', aspect = 'auto', extent = [0, (nx-2*n_pml)*dx, t[-1], t[0]], vmin = -vmax, vmax = vmax)
+    fig1 = ax.imshow(seis.real, cmap = 'gray', aspect = 'auto', extent = extent, vmin = -vmax, vmax = vmax)
     fig.colorbar(fig1)
-    ax.set_title('seismogram recorded at: '+str(z_rec)+'m')
+    ax.set_title('seismogram in time domain')
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Time (s)')
 
