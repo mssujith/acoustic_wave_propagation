@@ -55,14 +55,16 @@ Ts, Tr = src_rec(x_src, z_src, x_rec, z_rec, dx, dz, nx, nz, n_pml)
 P, data = forward_solver_13(F, v, d, src, Ts, Tr, dx, dz, n_pml)
 
 fname = './wavefields.png'
+extent = [0, (nx-2*n_pml) * dx, (nz-n_pml)*dz
 
-plot_wavefields(P, x_src, z_src, n_pml, dx, dz, F, fname)
+plot_wavefields(P, extent, F, fname)
 
 t, seis = freq2time(data, F)
 
 fname = './seismogram.png'
+extent = [0, (nx-2*n_pml)*dx, t[-1], t[0]]
 
-plot_seismogram(seis, t, nx, n_pml, dx, z_rec, fname)
+plot_seismogram(seis, extent, fname)
 
 
 
