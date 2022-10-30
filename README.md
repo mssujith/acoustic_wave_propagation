@@ -3,7 +3,7 @@
 
 The wave propagation modeling is created using the fourth-order staggered-grid finite difference approximation (13-point stencils) of the scalar wave equation in frequency domain. For stability and avoid numerical error, there should be at least 4 gridpoints per minimum wavelength. The boundaries are incorporated with Perfectly Matching Layers (PMLs) to suppress undesired reflections from edges.
 
-All the required functions are in the file **functions.py**
+All the required functions are in the file *functions.py*
 
 ## Reference
 
