@@ -1,3 +1,5 @@
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # 2D Acoustic Wave Propagation
 ## acoustic wave propagation in frequency domain using 13 and 5 point stencils
 
