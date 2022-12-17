@@ -47,7 +47,7 @@ src = (2/np.sqrt(np.pi))  *  (F**2/Fp**3)  *  np.exp(-((F**2/Fp**2)))
 x_src = [int((nx-2*n_pml)*dx//2)]
 z_src = 5
 
-x_rec = np.arange(12, int((nx-2*n_pml)*dx), 12)
+x_rec = np.arange(dx, int((nx-2*n_pml)*dx), dx)
 z_rec = 10
 
 Ts, Tr = src_rec(x_src, z_src, x_rec, z_rec, dx, dz, nx, nz, n_pml)
